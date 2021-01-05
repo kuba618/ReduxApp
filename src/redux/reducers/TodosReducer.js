@@ -29,9 +29,23 @@ export default function todosReducer(state = INITIAL_STATE, action) {
         return temp;
       });
       return { todos: newState };
+    case "ADD":
+      let arrayLen = state.todos.length + 1;
+      // console.log(state.todos);
+      // let array = [...state.todos];
+      state.todos.push({
+        id: arrayLen.toString(),
+        completed: false,
+        title: action.payload.value,
+      });
+      // console.log(array);
+      // console.log(state.todos);
+      return state;
     default:
       return state;
   }
 }
 
 export const selectTodos = (state) => state.todos;
+
+export const numberOfTodos = (state) => state.todos.todos.length;
