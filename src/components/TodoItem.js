@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 import { useDispatch } from "react-redux";
-import { markCompleted } from "../redux/TodoActions";
+import { markCompleted, removeTodo } from "../redux/TodoActions";
 
 export default function TodoItem({ item }) {
   const dispatch = useDispatch();
@@ -18,15 +18,24 @@ export default function TodoItem({ item }) {
         value={item.completed}
         onValueChange={(newValue) => dispatch(markCompleted(item.id, newValue))}
       />
-      <Text style={getStyle()}>{item.title}</Text>
+      <View style={styles.textWrapper}>
+        <Text style={getStyle()}>{item.title}</Text>
+      </View>
+      <View style={styles.button}>
+        <Button
+          color="#FF7129"
+          title="REMOVE"
+          onPress={() => dispatch(removeTodo({ item }))}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   todoItem: {
-    backgroundColor: "#f4f4f4",
-    padding: 10,
+    backgroundColor: "#4f4f47",
+    padding: 5,
     borderBottomColor: "#ccc",
     borderStyle: "dotted",
     borderBottomWidth: 1,
@@ -35,8 +44,16 @@ const styles = StyleSheet.create({
   },
   lineThrough: {
     textDecorationLine: "line-through",
+    color: "#EFD28D",
   },
   lineNone: {
     textDecorationLine: "none",
+    color: "#EFD28D",
+  },
+  button: {
+    marginLeft: "auto",
+  },
+  textWrapper: {
+    flex: 1,
   },
 });

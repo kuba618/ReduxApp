@@ -6,6 +6,9 @@ import {
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import TodoItem from "./TodoItem";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,39 +22,55 @@ export default function Todos() {
   const [value, onChangeText] = useState("Todo...");
 
   return (
-    <View style={styles.viewStyle}>
-      <Text>Elements in list: {numberOfTodosToShow}</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.viewStyle}>
+          <Text style={styles.textStyle}>
+            Elements in list: {numberOfTodosToShow}
+          </Text>
 
-      <FlatList
-        data={todos.todos}
-        renderItem={({ item }) => <TodoItem item={item} />}
-        keyExtractor={(todo) => todo.id}
-      />
+          <FlatList
+            data={todos.todos}
+            renderItem={({ item }) => <TodoItem item={item} />}
+            keyExtractor={(todo) => todo.id}
+          />
 
-      <TextInput
-        style={styles.textInput}
-        onChangeText={(text) => onChangeText(text)}
-        onFocus={(text) => onChangeText("")}
-        value={value}
-      />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => onChangeText(text)}
+            onFocus={(text) => onChangeText("")}
+            value={value}
+          />
 
-      <Button
-        title="Add Todo"
-        color="#f194ff"
-        onPress={() => dispatch(addTodo({ value }))}
-      />
-    </View>
+          <Button
+            title="Add Todo"
+            color="#FF7129"
+            onPress={() => dispatch(addTodo({ value }))}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   textInput: {
-    backgroundColor: "#f4f4f4",
+    backgroundColor: "#4f4f47",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
   },
   viewStyle: {
     flexDirection: "column",
-    height: 700,
+    flex: 1,
+    justifyContent: "space-around",
+  },
+  textStyle: {
+    color: "#ffffff",
   },
 });
